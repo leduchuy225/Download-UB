@@ -74,13 +74,16 @@ async function downloadVideo(url, file) {
     const data = await download(url, i).catch((error) =>
       console.error("Error downloading:", error)
     );
-    i += data.contentLength;
     contentRange = data.contentRange;
 
     if (data.contentLength != 0) {
+      i += data.contentLength;
+
       const partData = fs.readFileSync(data.partPath);
       await file.write(partData);
       fs.unlinkSync(data.partPath);
+    } else {
+      i += 1;
     }
   }
 }
