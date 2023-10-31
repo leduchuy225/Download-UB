@@ -1,11 +1,15 @@
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
+const ffmpeg = require("fluent-ffmpeg");
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
+const { Header, Header2, Header3 } = require("../sample-request");
 
-function downloader(url) {
-  axios({
-    method: "get",
+exports.donwloadFS = async (url, headers) => {
+  await axios({
     url: url,
+    method: "get",
+    headers: headers,
     responseType: "stream",
   })
     .then(function (response) {
@@ -30,14 +34,6 @@ function downloader(url) {
       });
     })
     .catch(function (error) {
-      // handle error
       console.log(error);
     });
-  // .then(function (filename) {
-  //   callback(filename);
-  // });
-}
-
-downloader(
-  "https://user-images.githubusercontent.com/11889052/263643733-80d01d2f-677b-4399-ad8b-f7af9bb62b72.mp4"
-);
+};
