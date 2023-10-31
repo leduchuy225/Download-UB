@@ -1,14 +1,10 @@
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
-const { Header3 } = require("./sample-request");
-
-const name = "Release1.mp4";
-const url =
-  "https://ub.net/khoa-hoc/studying/luyen-thi-ngan-hang-chinh-sach-xa-hoi-2023?ls=15691";
+const { Header, Name, URL } = require("./data-request");
 
 const getOptions = (bytesStart) => {
-  return { headers: { ...Header3, range: `bytes=${bytesStart}-` } };
+  return { headers: { ...Header, range: `bytes=${bytesStart}-` } };
 };
 
 function getFromHeader(response, key) {
@@ -86,8 +82,9 @@ async function downloadVideo(url, file) {
 
 // Call start
 (async () => {
-  const path = name;
+  const path = Name;
 
+  fs.mkdirSync("temp");
   fs.readdir("./temp", (err, files) => {
     if (err) {
       throw err;
@@ -105,10 +102,10 @@ async function downloadVideo(url, file) {
   const file = fs.createWriteStream(path);
 
   https.get(
-    url,
+    URL,
     {
       headers: {
-        ...Header3,
+        ...Header,
         "user-agent":
           "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",
       },
